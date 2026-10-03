@@ -1,0 +1,19 @@
+[project]
+name = "airtriage-hy26-app"
+version = "0.1.0"
+description = "Projekt obsługi modalności dronów dla ratowników górskich i medycznych w triażu."
+readme = "README.md"
+authors = [
+    { name = "piotr", email = "piotrek.matusiewicz@gmail.com" }
+]
+requires-python = ">=3.13, <3.14"
+dependencies = [
+    "opencv-python>=5.0.0.93",
+]
+
+[project.scripts]
+airtriage-hy26-app = "airtriage_hy26_app:main"
+
+[build-system]
+requires = ["uv_build>=0.12.7,<0.13.0"]
+build-backend = "uv_build"
