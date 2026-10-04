@@ -37,6 +37,20 @@ niczego pobierać ręcznie. Aby użyć innego modelu:
 track_speed(..., model_name="models/yolov8n.pt")
 ```
 
+## Dane
+
+W repozytorium leżą trzy małe filmy demonstracyjne (`data/1.mp4`, `data/drone.mp4`).
+Natomiast `data/input/` **nie jest w repozytorium** — `WIN_20261004_07_22_34_Pro.mp4` waży ok. 66 MB,
+więc trzeba go skopiować lokalnie przed uruchomieniem `nbutils/2_heart_rate_estimation.ipynb`.
+Wyniki tego notatnika (`data/output/`) są generowane i również nie są w repozytorium.
+
+Notatnik wyliczający tętno potrzebuje dodatkowej zależności `vitallens` (ciężka — pobiera
+`onnxruntime` i `vitallens-core`):
+
+```bash
+uv sync --extra hr
+```
+
 ## Konfiguracja trackera
 
 Parametry trackingu BoT-SORT znajdują się w `tracker.yaml`.
@@ -45,15 +59,24 @@ Parametry trackingu BoT-SORT znajdują się w `tracker.yaml`.
 
 | Ścieżka | Zawartość | W git |
 | --- | --- | --- |
-| `data/` | filmy wejściowe | tak |
+| `data/*.mp4` | filmy demonstracyjne | tak |
 | `nbutils/` | detekcja, tracking i przetwarzanie wideo | tak |
-| `src/airtriage_hy26_app/` | pakiet aplikacji | tak |
 | `tracker.yaml` | konfiguracja trackera BoT-SORT | tak |
 | `models/` | wagi YOLO | nie |
+| `data/input/` | filmy wejściowe notatnika HR | nie |
+| `data/output/` | filmy z tętnem (wynik notatnika HR) | nie |
 | `out/` | filmy z wynikami | nie |
 | `runs/` | wyjście Ultralytics | nie |
 
-`.gitignore` pilnuje też `*.pt`, `*.avi`, podglądów `*_preview.webm` w katalogu głównym,
+`nbutils` jest importowane z katalogu głównego repozytorium, a nie instalowane jako pakiet
+(`pyproject.toml` ustawia `tool.uv.package = false`), więc uruchamiaj notatniki z korzenia.
+
+`.gitignore` pilnuje też `*.pt`, `*.raw.mp4`, `*.avi`, podglądów `*_preview.webm`,
 `.venv/` i cache Pythona. Wygenerowane artefakty można bezpiecznie usuwać — zawsze odtwarzane
-przez ponowne uruchomienie.
+przez ponowne uruchomienie. Wyjścia notatników nie są commitowane; przed commitem usuń je poleceniem:
+
+```bash
+uvx --from nbconvert jupyter-nbconvert --clear-output --inplace \
+    1_detection_and_movement.ipynb nbutils/2_heart_rate_estimation.ipynb
+```
 

@@ -20,20 +20,10 @@ from statistics import median
 import cv2
 from ultralytics import YOLO
 
+from .device import get_device
+
 GREEN = (0, 255, 0)    # BGR
 YELLOW = (0, 255, 255)
-
-
-def get_device():
-    try:
-        import torch
-        if torch.cuda.is_available():
-            return 0
-        if torch.backends.mps.is_available():
-            return "mps"
-    except ImportError:
-        pass
-    return "cpu"
 
 
 def measure_speed(hist, fps, unit, person_height_m):
@@ -140,7 +130,3 @@ def track_speed(
         writer.release()
 
     return {"out_path": out_path, "fast_ids": sorted(fast_ids)}
-
-
-
-
