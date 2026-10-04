@@ -199,7 +199,8 @@ def annotate_videos(vl, input_dir, output_dir, suffix="_hr", skip_existing=True)
         try:
             info = annotate_video(vl, p, out)
             info["video"] = p.name
-        except Exception as e:                                # one bad video must not stop the batch
+        except Exception as e:                                # noqa: BLE001
+            # deliberate: one bad video must not stop the batch
             print(f"  FAILED: {e}")
             info = {"video": p.name, "error": str(e)}
         summary.append(info)

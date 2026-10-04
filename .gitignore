@@ -47,6 +47,23 @@ out/
 /outspeed_*.mp4
 /detected*.mp4
 
+# Notebook-generated videos (2_heart_rate_estimation.ipynb) and its inputs.
+data/output/
+data/input/
+
+# ---- Video intermediates ----
+# *_finalize() encodes to <name>.raw.mp4 first, then re-encodes to H.264.
+*.raw.mp4
+
+# ---- Preview clips (built by nbutils.video_utils.preview) ----
+data/*_preview.webm
+
+# ---- Editors / misc ----
+.vs/
+*.log
+*.tmp
+.cache/
+
 # ---- IDE ----
 .idea/
 .vscode/

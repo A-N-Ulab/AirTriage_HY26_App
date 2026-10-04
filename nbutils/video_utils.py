@@ -1,24 +1,20 @@
 import os
-os.environ.setdefault("QT_LOGGING_RULES", "qt.qpa.*=false")  # hides Qt font warnings
 
-import subprocess, time
+os.environ.setdefault("QT_LOGGING_RULES", "qt.qpa.*=false")  # hides Qt font warnings
+# NOTE: must stay above the `import cv2` below, or the Qt warnings come back.
+
+import subprocess
+import time
 from pathlib import Path
 
 import cv2
-from IPython.display import display, clear_output, Image, Video
+from IPython.display import Image, Video, clear_output, display
 
+from .device import get_device
 
-def get_device():
-    """Best available accelerator: CUDA, Apple Silicon, or CPU."""
-    try:
-        import torch
-        if torch.cuda.is_available():
-            return 0
-        if torch.backends.mps.is_available():
-            return "mps"
-    except ImportError:
-        pass
-    return "cpu"
+# get_device is re-exported here for backwards compatibility; it now lives in
+# nbutils.device so that `tracker` need not import IPython.
+__all__ = ["get_device", "play", "preview", "read_frames"]
 
 
 def read_frames(path):
@@ -38,7 +34,7 @@ def play(frames, fps=25):
     delay = 1 / fps
     for frame in frames:
         t = time.time()
-        ok, buf = cv2.imencode(".jpg", frame, [cv2.IMWRITE_JPEG_QUALITY, 80])
+        _ok, buf = cv2.imencode(".jpg", frame, [cv2.IMWRITE_JPEG_QUALITY, 80])
         clear_output(wait=True)
         display(Image(data=buf.tobytes()))
         time.sleep(max(0, delay - (time.time() - t)))
