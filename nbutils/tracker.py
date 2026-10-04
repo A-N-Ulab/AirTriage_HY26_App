@@ -60,11 +60,11 @@ def draw_label(frame, x, y, text, color):
 def track_speed(
     path,
     out_path="speed.mp4",
-    threshold=4.0,            # speed above which a person turns green (in `unit`)
+    threshold=1,            # speed above which a person turns green (in `unit`)
     unit="m",                 # "m" = approx. metres/second, "px" = pixels/second
     person_height_m=1.7,      # only used when unit="m"
     window_s=0.5,             # speed is measured over this many seconds
-    confirm_frames=3,         # consecutive frames above threshold before latching green
+    confirm_frames=1,         # consecutive frames above threshold before latching green
     max_gap=15,               # frames; a track missing longer than this loses its history
     model_name="models/yolov8m.pt",
     tracker="tracker.yaml",
