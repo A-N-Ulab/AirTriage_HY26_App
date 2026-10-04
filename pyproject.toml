@@ -8,7 +8,9 @@ authors = [
 ]
 requires-python = ">=3.13, <3.14"
 dependencies = [
+    "matplotlib>=3.11.2",
     "opencv-python>=5.0.0.93",
+    "ultralytics>=8.4.172",
 ]
 
 [project.scripts]
