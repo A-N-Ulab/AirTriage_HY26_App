@@ -11,7 +11,7 @@ match_thresh: 0.9          # max matching cost (1 - IoU); lower = stricter
 fuse_score: True           # combine detection score with IoU when matching
 
 # BoT-SORT only
-gmc_method: none           # camera-motion compensation; "none" for a fixed camera
+gmc_method: sparseOptFlow           # camera-motion compensation; "none" for a fixed camera
 proximity_thresh: 0.8      # min box overlap before appearance matching is used
 appearance_thresh: 0.25    # min appearance similarity to count as a match
 with_reid: True            # match by appearance too (helps with overlaps)
