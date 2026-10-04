@@ -1,0 +1,28 @@
+tracker_type: botsort      # "botsort" or "bytetrack"; the only two options
+
+# Detection thresholds (applied to boxes the detector passes in)
+track_high_thresh: 0.3     # boxes above this are matched to tracks first
+track_low_thresh: 0.1      # weaker boxes can still extend existing tracks (occluded people)
+new_track_thresh: 0.1      # min score for an unmatched box to start a new ID
+
+# Track lifetime and matching
+track_buffer: 90           # frames a lost track is kept (90 = 3 s at 30 fps)
+match_thresh: 0.9          # max matching cost (1 - IoU); lower = stricter
+fuse_score: True           # combine detection score with IoU when matching
+
+# BoT-SORT only
+gmc_method: none           # camera-motion compensation; "none" for a fixed camera
+proximity_thresh: 0.8      # min box overlap before appearance matching is used
+appearance_thresh: 0.25    # min appearance similarity to count as a match
+with_reid: True            # match by appearance too (helps with overlaps)
+model: auto                # ReID features come from the detector itself
+
+
+
+
+
+
+
+
+
+
