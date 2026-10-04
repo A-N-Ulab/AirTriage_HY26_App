@@ -6,12 +6,15 @@ readme = "README.md"
 authors = [
     { name = "piotr", email = "piotrek.matusiewicz@gmail.com" }
 ]
-requires-python = ">=3.13, <3.14"
+requires-python = ">=3.12, <3.14"
 dependencies = [
     "imageio-ffmpeg>=0.6.0",
+    "ipykernel>=7.4.0",
     "matplotlib>=3.11.2",
-    "opencv-python>=5.0.0.93",
+    "opencv-python<5",
+    "standard-imghdr>=3.13.0",
     "ultralytics>=8.4.172",
+    "vitallens>=0.6.1",
 ]
 
 [project.scripts]
