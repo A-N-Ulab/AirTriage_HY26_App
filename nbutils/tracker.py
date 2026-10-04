@@ -6,13 +6,15 @@ YOLO + tracker: per-person speed estimation with a latched "fast" flag.
 - YELLOW = not (yet) above the threshold.
 - GREEN  = was above the threshold at some point, and stays green for the rest of the video.
 
-Notebook:  from speed_tracker import track_speed
-           track_speed(videos[0], "speed.mp4", threshold=2.0)
-Terminal:  python speed_tracker.py video.mp4 --out speed.mp4 --threshold 2.0
+Usage:  from nbutils.tracker import track_speed
+        track_speed(videos[0], "out/speed_0.mp4", threshold=2.0)
+
+Weights are read from models/ (git-ignored); ultralytics downloads them
+automatically on first use if they are missing.
 """
-import argparse
 import math
 from collections import defaultdict, deque
+from pathlib import Path
 from statistics import median
 
 import cv2
@@ -64,7 +66,7 @@ def track_speed(
     window_s=0.5,             # speed is measured over this many seconds
     confirm_frames=3,         # consecutive frames above threshold before latching green
     max_gap=15,               # frames; a track missing longer than this loses its history
-    model_name="yolov8m.pt",
+    model_name="models/yolov8m.pt",
     tracker="tracker.yaml",
     conf=0.15, iou=0.8, imgsz=960,
 ):
@@ -77,6 +79,7 @@ def track_speed(
     window = max(2, round(fps * window_s))                 # window length in frames
     unit_label = "m/s" if unit == "m" else "px/s"
 
+    Path(model_name).parent.mkdir(parents=True, exist_ok=True)   # so ultralytics can fetch it there
     model = YOLO(model_name)                               # new instance = fresh tracker state
     device = get_device()
     writer = cv2.VideoWriter(out_path, cv2.VideoWriter_fourcc(*"mp4v"), fps, (w, h))
