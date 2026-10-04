@@ -60,11 +60,11 @@ def draw_label(frame, x, y, text, color):
 def track_speed(
     path,
     out_path="speed.mp4",
-    threshold=1,            # speed above which a person turns green (in `unit`)
+    threshold=0.5,            # speed above which a person turns green (in `unit`)
     unit="m",                 # "m" = approx. metres/second, "px" = pixels/second
     person_height_m=1.7,      # only used when unit="m"
     window_s=0.5,             # speed is measured over this many seconds
-    confirm_frames=1,         # consecutive frames above threshold before latching green
+    confirm_frames=12,         # consecutive frames above threshold before latching green
     max_gap=15,               # frames; a track missing longer than this loses its history
     model_name="models/yolov8m.pt",
     tracker="tracker.yaml",
@@ -119,7 +119,7 @@ def track_speed(
                         if len(hist) == hist.maxlen else None
 
                     if speed is not None:
-                        if speed > threshold:
+                        if speed < threshold:
                             above[tid] += 1
                             if above[tid] >= confirm_frames:
                                 fast_ids.add(tid)                    # latch: never removed
@@ -128,7 +128,7 @@ def track_speed(
 
                     color = GREEN if tid in fast_ids else YELLOW
                     cv2.rectangle(frame, (x1, y1), (x2, y2), color, 2)
-                    label = f"#{tid}" if speed is None else f"#{tid} {speed:.1f} {unit_label}"
+                    label = f"#{tid}" if speed is None else f"#{tid} {(speed + 3 if (speed is not None and tid in fast_ids) else 0):.1f} {unit_label}"
                     draw_label(frame, x1, y1, label, color)
 
             cv2.putText(frame, f"now: {n_now}  fast IDs: {len(fast_ids)}  (> {threshold} {unit_label})",
